@@ -6,7 +6,7 @@
 /*   By: bpoetess <bpoetess@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 17:24:30 by bpoetess          #+#    #+#             */
-/*   Updated: 2022/06/06 18:53:34 by bpoetess         ###   ########.fr       */
+/*   Updated: 2022/06/10 03:19:24 by bpoetess         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ static void	philo_usageerror_text(void)
 
 int	philo_usageerror(int arc, char **arv)
 {
-	if (arc <= 4 || arc >= 7 || ft_atoi(arv[1]) <= 1 || ft_atoi(arv[2]) <= 0
-		|| ft_atoi(arv[3]) <= 0)
+	if (arc <= 4 || arc >= 7 || ft_atoi(arv[1]) <= 0 || ft_atoi(arv[2]) <= 0
+		|| ft_atoi(arv[3]) <= 0 || (arc == 6 && ft_atoi(arv[5]) <= 0))
 	{
 		philo_usageerror_text();
 		return (1);

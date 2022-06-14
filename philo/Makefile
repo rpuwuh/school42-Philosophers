@@ -4,25 +4,25 @@ OBJDIR=./obj/
 
 HEADER = philo.h
 
-SRC = ft_atoi.c philo_usageerror.c
+SRC = ft_atoi.c philo_usageerror.c philo_set.c philo_utils.c
 
 SRC_O = $(addprefix $(OBJDIR),$(SRC:.c=.o))
 
 CC = cc
 
-CFLAGS = -Wall -Werror -Wextra -fsanitize=thread
+CFLAGS = -Wall -Werror -Wextra #-fsanitize=thread
 
 $(NAME): $(OBJDIR) $(OBJDIR)$(NAME).o $(SRC_O) $(HEADER) Makefile
-	$(CC) $(CFLAGS) $(OBJDIR)$(NAME).o $(SRC_O)  -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJDIR)$(NAME).o $(SRC_O) -o $(NAME)
 
 $(OBJDIR):
 	mkdir $(OBJDIR)
 
 $(OBJDIR)$(NAME).o: $(NAME).c $(HEADER) Makefile
-	$(CC) $(CFLAGS)  -c -o $@ $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(OBJDIR)%.o: %.c $(NAME).c $(HEADER) Makefile
-	$(CC) $(CFLAGS)  -c -o $@ $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 all: $(NAME)
 
