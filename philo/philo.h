@@ -6,7 +6,7 @@
 /*   By: bpoetess <bpoetess@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 16:09:49 by bpoetess          #+#    #+#             */
-/*   Updated: 2022/06/14 06:10:46 by bpoetess         ###   ########.fr       */
+/*   Updated: 2022/06/17 09:44:34 by bpoetess         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,9 @@ struct s_guy
 {
 	int				num;
 	int				counteats;
-	pthread_mutex_t	mutexforlasttime;
+	pthread_mutex_t	mutexforcounteats;
 	t_time			lasttimeeat;
+	pthread_mutex_t	mutexforlasttime;
 	t_fork			*l_fork;
 	t_fork			*r_fork;
 	pthread_t		id;
@@ -71,10 +72,14 @@ int			philo_usageerror(int arc, char **argv);
 
 t_global	*philo_setglb(int argc, char **argv);
 
-long int	philo_gettimeinms(t_time time);
 void		philo_print(t_global *glb, char *s, int n);
+
+long int	philo_gettimeinms(t_time time);
 int			philo_checkstop(t_global *glb);
-void		philo_stop(t_global *glb);
 void		*philo_checker(void *data);
+
+void		*philo_thread(void *data);
+
+void		philo_sleep(int time);
 
 #endif

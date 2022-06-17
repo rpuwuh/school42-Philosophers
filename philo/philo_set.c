@@ -6,7 +6,7 @@
 /*   By: bpoetess <bpoetess@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/10 00:31:55 by bpoetess          #+#    #+#             */
-/*   Updated: 2022/06/14 05:36:21 by bpoetess         ###   ########.fr       */
+/*   Updated: 2022/06/17 09:49:34 by bpoetess         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ static t_fork	*philo_createforks(t_global *glb)
 	{
 		forks[i].num = i;
 		pthread_mutex_init(&(forks[i].mutex), 0);
-		printf("\ta fork has been created, it's number is %d\n", forks[i].num);
 		i++;
 	}
 	return (forks);
@@ -51,6 +50,7 @@ static t_guy	*philo_createguys(t_global *glb)
 		guys[i].glb = glb;
 		guys[i].r_fork = glb->forks + i;
 		pthread_mutex_init(&(guys[i].mutexforlasttime), 0);
+		pthread_mutex_init(&(guys[i].mutexforcounteats), 0);
 		if (i == glb->count - 1)
 			guys[i].l_fork = glb->forks;
 		else
