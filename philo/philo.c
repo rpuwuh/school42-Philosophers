@@ -6,7 +6,7 @@
 /*   By: bpoetess <bpoetess@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 16:09:40 by bpoetess          #+#    #+#             */
-/*   Updated: 2022/06/17 09:46:43 by bpoetess         ###   ########.fr       */
+/*   Updated: 2022/06/19 14:37:55 by bpoetess         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	philo_end(t_global *glb)
 	}
 	pthread_mutex_destroy(&(glb->print_mutex));
 	pthread_mutex_destroy(&(glb->stop_mutex));
+	pthread_mutex_destroy(&(glb->start_mutex));
 	free(glb->forks);
 	free(glb->guys);
 	free(glb);
@@ -42,7 +43,7 @@ void	philo_sleep(int time)
 	while (philo_gettimeinms(now) - philo_gettimeinms(start) < time)
 	{
 		gettimeofday(&now, 0);
-		usleep (10);
+		usleep (127);
 	}
 }
 
@@ -51,12 +52,13 @@ void	philo_createthreads(t_global *glb)
 	int	i;
 
 	i = 0;
-	gettimeofday(&(glb->starttime), 0);
 	while (i < glb->count)
 	{
 		pthread_create(&glb->guys[i].id, 0, philo_thread, &glb->guys[i]);
 		i++;
 	}
+	gettimeofday(&(glb->starttime), 0);
+	philo_start(glb);
 	pthread_create(&(glb->checkerid), 0, philo_checker, glb);
 	pthread_join(glb->checkerid, 0);
 	i = 0;

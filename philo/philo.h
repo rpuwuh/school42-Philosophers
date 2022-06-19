@@ -6,7 +6,7 @@
 /*   By: bpoetess <bpoetess@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 16:09:49 by bpoetess          #+#    #+#             */
-/*   Updated: 2022/06/17 09:44:34 by bpoetess         ###   ########.fr       */
+/*   Updated: 2022/06/19 12:38:35 by bpoetess         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ struct s_global
 	t_time			starttime;
 	t_fork			*forks;
 	t_guy			*guys;
+	int				start;
+	pthread_mutex_t	start_mutex;
 	int				stop;
 	pthread_mutex_t	stop_mutex;
 	pthread_mutex_t	print_mutex;
@@ -81,5 +83,8 @@ void		*philo_checker(void *data);
 void		*philo_thread(void *data);
 
 void		philo_sleep(int time);
+
+void		philo_waitstart(t_global *glb);
+void		philo_start(t_global *glb);
 
 #endif

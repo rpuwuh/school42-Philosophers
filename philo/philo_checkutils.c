@@ -6,7 +6,7 @@
 /*   By: bpoetess <bpoetess@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 03:41:13 by bpoetess          #+#    #+#             */
-/*   Updated: 2022/06/17 00:46:33 by bpoetess         ###   ########.fr       */
+/*   Updated: 2022/06/19 14:24:11 by bpoetess         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,21 +38,27 @@ static void	philo_deadguys(t_global *glb)
 {
 	int			i;
 	t_time		timenow;
+	t_time		lasttime;
 
+	gettimeofday(&timenow, 0);
+	while ((int)(philo_gettimeinms(timenow)
+		- philo_gettimeinms(glb->starttime)) <= glb->ttd)
+	{
+		gettimeofday(&timenow, 0);
+		usleep(70);
+	}
 	i = 0;
 	while (!philo_checkstop(glb) && i < glb->count)
 	{
 		gettimeofday(&timenow, 0);
 		pthread_mutex_lock(&(glb->guys[i].mutexforlasttime));
-		if ((int)(philo_gettimeinms(timenow)
-			- philo_gettimeinms(glb->starttime)) > glb->ttd
-			&& (int)(philo_gettimeinms(timenow)
-			- philo_gettimeinms(glb->guys[i].lasttimeeat)) > glb->ttd)
-		{
-			philo_print(glb, "died\n", i);
-			philo_stop(glb);
-		}
+		lasttime = glb->guys[i].lasttimeeat;
 		pthread_mutex_unlock(&(glb->guys[i].mutexforlasttime));
+		if (philo_gettimeinms(timenow) - philo_gettimeinms(lasttime) > glb->ttd)
+		{
+			philo_stop(glb);
+			philo_print(glb, "died\n", i);
+		}
 		i++;
 	}
 }
@@ -62,6 +68,7 @@ void	*philo_checker(void *data)
 	t_global	*glb;
 	int			status;
 	int			i;
+	int			count;
 
 	glb = data;
 	while (!philo_checkstop(glb))
@@ -73,9 +80,10 @@ void	*philo_checker(void *data)
 			&& i < glb->count)
 		{
 			pthread_mutex_lock(&(glb->guys[i].mutexforcounteats));
-			if (glb->guys[i].counteats < glb->numoftimes)
-				status = 0;
+			count = glb->guys[i].counteats;
 			pthread_mutex_unlock(&(glb->guys[i].mutexforcounteats));
+			if (count < glb->numoftimes)
+				status = 0;
 			i++;
 		}
 		if (glb->numoftimes && status)

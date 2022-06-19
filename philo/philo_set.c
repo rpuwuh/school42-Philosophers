@@ -6,7 +6,7 @@
 /*   By: bpoetess <bpoetess@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/10 00:31:55 by bpoetess          #+#    #+#             */
-/*   Updated: 2022/06/17 09:49:34 by bpoetess         ###   ########.fr       */
+/*   Updated: 2022/06/19 12:32:04 by bpoetess         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,9 @@ t_global	*philo_setglb(int argc, char **argv)
 	if (!glb)
 		return (0);
 	pthread_mutex_init(&(glb->print_mutex), 0);
+	pthread_mutex_init(&(glb->start_mutex), 0);
 	pthread_mutex_init(&(glb->stop_mutex), 0);
+	glb->start = 0;
 	glb->stop = 0;
 	glb->count = ft_atoi(argv[1]);
 	glb->ttd = ft_atoi(argv[2]);

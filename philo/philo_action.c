@@ -6,7 +6,7 @@
 /*   By: bpoetess <bpoetess@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 00:36:03 by bpoetess          #+#    #+#             */
-/*   Updated: 2022/06/17 09:47:28 by bpoetess         ###   ########.fr       */
+/*   Updated: 2022/06/19 13:49:48 by bpoetess         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ static void	philo_updateeattime(t_guy *guy)
 
 static int	philo_takeforks(t_guy *guy)
 {
-	if (philo_checkstop(guy->glb))
-		return (0);
 	if (guy->l_fork->num < guy->r_fork->num)
 	{
 		if (!philo_takefork(guy->glb, guy, guy->l_fork))
@@ -89,11 +87,18 @@ void	*philo_thread(void *data)
 	t_guy	*guy;
 
 	guy = (t_guy *) data;
+	philo_waitstart(guy->glb);
 	if (guy->num % 2)
-		usleep(1500);
+	{
+		philo_print(guy->glb, "is sleeping\n", guy->num);
+		philo_sleep(guy->glb->tts);
+		if (philo_checkstop(guy->glb))
+			return (0);
+		philo_print(guy->glb, "is thinking\n", guy->num);
+	}
 	while (!philo_checkstop(guy->glb))
 	{
-		if (philo_checkstop(guy->glb) || !philo_eat(guy))
+		if (!philo_eat(guy))
 			return (0);
 		if (philo_checkstop(guy->glb))
 			return (0);
