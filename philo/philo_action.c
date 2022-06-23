@@ -6,7 +6,7 @@
 /*   By: bpoetess <bpoetess@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 00:36:03 by bpoetess          #+#    #+#             */
-/*   Updated: 2022/06/19 13:49:48 by bpoetess         ###   ########.fr       */
+/*   Updated: 2022/06/23 20:17:52 by bpoetess         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static int	philo_takefork(t_global *glb, t_guy *guy, t_fork *fork)
 	if (philo_checkstop(glb))
 		return (0);
 	pthread_mutex_lock(&(fork->mutex));
+	if (philo_checkstop(glb))
+		return (0);
 	philo_print(glb, "has taken a fork\n", guy->num);
 	return (1);
 }
@@ -30,25 +32,12 @@ static void	philo_updateeattime(t_guy *guy)
 
 static int	philo_takeforks(t_guy *guy)
 {
-	if (guy->l_fork->num < guy->r_fork->num)
+	if (!philo_takefork(guy->glb, guy, guy->l_fork))
+		return (0);
+	if (!philo_takefork(guy->glb, guy, guy->r_fork))
 	{
-		if (!philo_takefork(guy->glb, guy, guy->l_fork))
-			return (0);
-		if (!philo_takefork(guy->glb, guy, guy->r_fork))
-		{
-			pthread_mutex_unlock(&(guy->l_fork->mutex));
-			return (0);
-		}
-	}
-	else
-	{
-		if (!philo_takefork(guy->glb, guy, guy->r_fork))
-			return (0);
-		if (!philo_takefork(guy->glb, guy, guy->l_fork))
-		{
-			pthread_mutex_unlock(&(guy->r_fork->mutex));
-			return (0);
-		}
+		pthread_mutex_unlock(&(guy->l_fork->mutex));
+		return (0);
 	}
 	return (1);
 }
@@ -69,16 +58,8 @@ int	philo_eat(t_guy *guy)
 	guy->counteats ++;
 	pthread_mutex_unlock(&(guy->mutexforcounteats));
 	philo_updateeattime(guy);
-	if (guy->l_fork->num < guy->r_fork->num)
-	{
-		pthread_mutex_unlock(&(guy->r_fork->mutex));
-		pthread_mutex_unlock(&(guy->l_fork->mutex));
-	}
-	else
-	{
-		pthread_mutex_unlock(&(guy->l_fork->mutex));
-		pthread_mutex_unlock(&(guy->r_fork->mutex));
-	}
+	pthread_mutex_unlock(&(guy->r_fork->mutex));
+	pthread_mutex_unlock(&(guy->l_fork->mutex));
 	return (1);
 }
 

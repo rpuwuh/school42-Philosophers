@@ -6,7 +6,7 @@
 /*   By: bpoetess <bpoetess@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 16:09:40 by bpoetess          #+#    #+#             */
-/*   Updated: 2022/06/20 17:09:56 by bpoetess         ###   ########.fr       */
+/*   Updated: 2022/06/23 19:55:13 by bpoetess         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	philo_sleep(int time)
 	while (philo_gettimeinms(now) - philo_gettimeinms(start) < time)
 	{
 		gettimeofday(&now, 0);
-		usleep (127);
+		usleep (120);
 	}
 }
 
