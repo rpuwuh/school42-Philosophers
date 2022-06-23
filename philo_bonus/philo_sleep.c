@@ -6,7 +6,7 @@
 /*   By: bpoetess <bpoetess@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 19:02:29 by bpoetess          #+#    #+#             */
-/*   Updated: 2022/06/21 19:04:01 by bpoetess         ###   ########.fr       */
+/*   Updated: 2022/06/23 21:12:22 by bpoetess         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,4 +29,28 @@ void	philo_sleep(int time)
 		gettimeofday(&now, 0);
 		usleep (127);
 	}
+}
+
+void	philo_waitstart(t_time *start, int delay)
+{
+	t_time	now;
+
+	gettimeofday(&now, 0);
+	while (philo_gettimeinms(now) - philo_gettimeinms(*start) < delay)
+	{
+		gettimeofday(&now, 0);
+		usleep (127);
+	}
+	start->tv_sec += delay / 1000;
+}
+
+void	philo_print(t_global *glb, char *s, int n)
+{
+	t_time	timenow;
+
+	gettimeofday(&timenow, 0);
+	sem_wait(glb->sem_printf);
+	printf("%d %d %s", (int)(philo_gettimeinms(timenow)
+			- philo_gettimeinms(glb->starttime)), n + 1, s);
+	sem_post(glb->sem_printf);
 }

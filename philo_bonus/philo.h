@@ -6,7 +6,7 @@
 /*   By: bpoetess <bpoetess@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 16:09:49 by bpoetess          #+#    #+#             */
-/*   Updated: 2022/06/21 19:02:04 by bpoetess         ###   ########.fr       */
+/*   Updated: 2022/06/23 21:11:18 by bpoetess         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ typedef struct timeval	t_time;
 typedef struct s_guy
 {
 	int		num;
-	t_time	starttime;
 	sem_t	*sem_start;
 	sem_t	*sem_forks;
 	sem_t	*sem_forks_permission;
@@ -41,6 +40,7 @@ typedef struct s_global
 	int		tte;
 	int		tts;
 	int		numoftimes;
+	t_time	starttime;
 	pid_t	*guys;
 	sem_t	*sem_start;
 	sem_t	*sem_forks;
@@ -56,5 +56,7 @@ sem_t		*philo_createsemaphor(char *name, int num);
 void		philo_killsemaphor(sem_t *sem, char *name);
 
 void		philo_sleep(int time);
+void		philo_waitstart(t_time *start, int delay);
+void		philo_print(t_global *glb, char *s, int n);
 
 #endif

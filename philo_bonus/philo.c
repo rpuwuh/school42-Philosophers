@@ -6,7 +6,7 @@
 /*   By: bpoetess <bpoetess@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 16:09:40 by bpoetess          #+#    #+#             */
-/*   Updated: 2022/06/23 19:09:18 by bpoetess         ###   ########.fr       */
+/*   Updated: 2022/06/23 21:20:22 by bpoetess         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,18 +55,23 @@ void	philo_end(t_global *glb)
 
 void	philo_b_process(t_global *glb, pid_t id)
 {
-	exit (0);
-	printf("hello from the process, pid is %d\t%x\n", id, (unsigned int)glb);
-	sem_wait (glb->sem_forks_access);
-	sem_wait (glb->sem_forks);
-	sem_wait (glb->sem_forks);
-	sem_post (glb->sem_forks_access);
-	philo_sleep (glb->tte);
-	printf("i have eaten\n");
-	sem_post(glb->sem_forks);
-	sem_post(glb->sem_forks);
+	philo_waitstart(&glb->starttime, (1 + glb->count / 100) * 1000);
 	while (1)
-		usleep(100);
+	{
+		sem_wait (glb->sem_forks_access);
+		sem_wait (glb->sem_forks);
+		philo_print(glb, "has taken a fork\n", id);
+		sem_wait (glb->sem_forks);
+		philo_print(glb, "has taken a fork\n", id);
+		sem_post (glb->sem_forks_access);
+		philo_print(glb, "is eating\n", id);
+		philo_sleep (glb->tte);
+		sem_post(glb->sem_forks);
+		sem_post(glb->sem_forks);
+		philo_print(glb, "is sleeping\n", id);
+		philo_sleep (glb->tts);
+		philo_print(glb, "is thinking\n", id);
+	}
 	exit (0);
 }
 
@@ -79,25 +84,14 @@ int	main(int argc, char **argv)
 		return (22);
 	glb = philo_setglb(argc, argv);
 	i = 0;
+	gettimeofday(&glb->starttime, 0);
 	while (i < ft_atoi(argv[1]))
 	{
 		glb->guys[i] = fork();
 		if (!glb->guys[i])
-			exit (0);
-		(void) (i);
-		sem_wait(glb->sem_printf);
-		fflush(0);
-		printf("%d\t", i);
-		sem_post(glb->sem_printf);
-		if (!(i % 3))
-		{
-			sem_wait(glb->sem_printf);
-			printf("\n");
-			sem_post(glb->sem_printf);
-		}
+			philo_b_process(glb, i);
 		i++;
-		// printf("this is %d process\n", getpid());
 	}
-	exit (0);
-	// philo_end(glb);
+	usleep (100000000);
+	philo_end(glb);
 }
