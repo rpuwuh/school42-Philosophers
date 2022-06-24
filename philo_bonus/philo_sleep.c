@@ -6,13 +6,13 @@
 /*   By: bpoetess <bpoetess@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 19:02:29 by bpoetess          #+#    #+#             */
-/*   Updated: 2022/06/23 21:12:22 by bpoetess         ###   ########.fr       */
+/*   Updated: 2022/06/24 23:05:17 by bpoetess         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static long int	philo_gettimeinms(t_time time)
+long int	philo_gettimeinms(t_time time)
 {
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }

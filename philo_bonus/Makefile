@@ -4,7 +4,7 @@ OBJDIR=./obj/
 
 HEADER = philo.h
 
-SRC =	ft_atoi.c philo_usageerror.c philo_sem.c philo_sleep.c
+SRC =	ft_atoi.c philo_usageerror.c philo_sem.c philo_sleep.c philo_set_end.c philo_setprocess.c
 
 SRC_O = $(addprefix $(OBJDIR),$(SRC:.c=.o))
 

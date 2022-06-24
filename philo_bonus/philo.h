@@ -6,7 +6,7 @@
 /*   By: bpoetess <bpoetess@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 16:09:49 by bpoetess          #+#    #+#             */
-/*   Updated: 2022/06/23 21:11:18 by bpoetess         ###   ########.fr       */
+/*   Updated: 2022/06/24 22:59:18 by bpoetess         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,29 +24,40 @@
 
 typedef struct timeval	t_time;
 
-typedef struct s_guy
-{
-	int		num;
-	sem_t	*sem_start;
-	sem_t	*sem_forks;
-	sem_t	*sem_forks_permission;
-	sem_t	*sem_printf;
-}	t_guy;
+typedef struct s_global	t_global;
 
-typedef struct s_global
+typedef struct s_checker
 {
-	int		count;
-	int		ttd;
-	int		tte;
-	int		tts;
-	int		numoftimes;
-	t_time	starttime;
-	pid_t	*guys;
-	sem_t	*sem_start;
-	sem_t	*sem_forks;
-	sem_t	*sem_forks_access;
-	sem_t	*sem_printf;
-}	t_global;
+	t_global	*glb;
+	t_time		checkedtime;
+	t_time		eatentime;
+	t_time		timenow;
+	int			eatenstatus;
+	int			eatencount;
+}	t_checker;
+
+struct s_global
+{
+	int			count;
+	int			ttd;
+	int			tte;
+	int			tts;
+	int			numoftimes;
+	int			eatencount;
+	t_time		eatentime;
+	t_time		eatentimecheck;
+	sem_t		*philo_sem;
+	pid_t		philo_id;
+	pthread_t	id_hungerchecker;
+	pthread_t	id_eatenchecker;
+	t_time		starttime;
+	pid_t		*guys;
+	sem_t		*sem_eaten;
+	sem_t		*sem_eatentime;
+	sem_t		*sem_forks;
+	sem_t		*sem_forks_access;
+	sem_t		*sem_printf;
+};
 
 int			ft_atoi(const char *str);
 
@@ -55,8 +66,14 @@ int			philo_usageerror(int arc, char **argv);
 sem_t		*philo_createsemaphor(char *name, int num);
 void		philo_killsemaphor(sem_t *sem, char *name);
 
+long int	philo_gettimeinms(t_time time);
 void		philo_sleep(int time);
 void		philo_waitstart(t_time *start, int delay);
 void		philo_print(t_global *glb, char *s, int n);
+
+t_global	*philo_setglb(int argc, char **argv);
+void		philo_end(t_global *glb);
+
+void		philo_set_process(t_global *glb);
 
 #endif
