@@ -6,7 +6,7 @@
 /*   By: bpoetess <bpoetess@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 16:09:49 by bpoetess          #+#    #+#             */
-/*   Updated: 2022/06/24 22:59:18 by bpoetess         ###   ########.fr       */
+/*   Updated: 2022/06/25 20:13:04 by bpoetess         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ struct s_global
 	t_time		eatentime;
 	t_time		eatentimecheck;
 	sem_t		*philo_sem;
+	sem_t		*death_sem;
 	pid_t		philo_id;
 	pthread_t	id_hungerchecker;
 	pthread_t	id_eatenchecker;
@@ -75,5 +76,8 @@ t_global	*philo_setglb(int argc, char **argv);
 void		philo_end(t_global *glb);
 
 void		philo_set_process(t_global *glb);
+
+void		*philo_hungerchecker(void *data);
+void		*philo_eatenchecksem(void *data);
 
 #endif
