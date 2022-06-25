@@ -11,7 +11,7 @@ SRC_O = $(addprefix $(OBJDIR),$(SRC:.c=.o))
 
 CC = cc
 
-CFLAGS = -Wall -Werror -Wextra -fsanitize=thread -g
+CFLAGS = -Wall -Werror -Wextra #-fsanitize=thread -g
 
 $(NAME): $(OBJDIR) $(OBJDIR)$(NAME).o $(SRC_O) $(HEADER) Makefile
 	$(CC) $(CFLAGS) $(OBJDIR)$(NAME).o $(SRC_O) -o $(NAME)
