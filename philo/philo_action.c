@@ -6,7 +6,7 @@
 /*   By: bpoetess <bpoetess@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 00:36:03 by bpoetess          #+#    #+#             */
-/*   Updated: 2022/06/23 20:17:52 by bpoetess         ###   ########.fr       */
+/*   Updated: 2022/06/27 20:09:33 by bpoetess         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ static void	philo_updateeattime(t_guy *guy)
 
 static int	philo_takeforks(t_guy *guy)
 {
-	if (!philo_takefork(guy->glb, guy, guy->l_fork))
+	if (guy->l_fork == guy->r_fork
+		|| !philo_takefork(guy->glb, guy, guy->l_fork))
 		return (0);
 	if (!philo_takefork(guy->glb, guy, guy->r_fork))
 	{

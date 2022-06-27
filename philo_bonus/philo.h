@@ -6,7 +6,7 @@
 /*   By: bpoetess <bpoetess@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 16:09:49 by bpoetess          #+#    #+#             */
-/*   Updated: 2022/06/25 20:13:04 by bpoetess         ###   ########.fr       */
+/*   Updated: 2022/06/27 22:35:20 by bpoetess         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ typedef struct s_checker
 	t_time		checkedtime;
 	t_time		eatentime;
 	t_time		timenow;
-	int			eatenstatus;
 	int			eatencount;
 }	t_checker;
 
@@ -43,6 +42,7 @@ struct s_global
 	int			tte;
 	int			tts;
 	int			numoftimes;
+	int			eatenstatus;
 	int			eatencount;
 	t_time		eatentime;
 	t_time		eatentimecheck;
@@ -69,15 +69,23 @@ void		philo_killsemaphor(sem_t *sem, char *name);
 
 long int	philo_gettimeinms(t_time time);
 void		philo_sleep(int time);
-void		philo_waitstart(t_time *start, int delay);
+void		philo_waitstart(t_time start, int delay);
+void		philo_setstart(t_time *start, int delay);
 void		philo_print(t_global *glb, char *s, int n);
 
 t_global	*philo_setglb(int argc, char **argv);
 void		philo_end(t_global *glb);
 
+void		philo_action(t_global *glb, char *s, pid_t id);
+void		philo_actions(t_global *glb, pid_t id);
+void		philo_b_process(t_global *glb, pid_t id);
 void		philo_set_process(t_global *glb);
 
 void		*philo_hungerchecker(void *data);
 void		*philo_eatenchecksem(void *data);
+
+char		*ft_itoa(int n);
+
+sem_t		*philo_createsemaphor_num(int max, pid_t id, int num);
 
 #endif

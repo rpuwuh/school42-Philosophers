@@ -6,7 +6,7 @@
 /*   By: bpoetess <bpoetess@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/06 16:09:40 by bpoetess          #+#    #+#             */
-/*   Updated: 2022/06/23 19:55:13 by bpoetess         ###   ########.fr       */
+/*   Updated: 2022/06/27 22:53:51 by bpoetess         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,9 @@ void	philo_end(t_global *glb)
 	i = 0;
 	while (i < glb->count)
 	{
-		pthread_mutex_destroy(&(((glb->guys)[i++]).mutexforlasttime));
-		pthread_mutex_destroy(&(((glb->guys)[i++]).mutexforcounteats));
+		pthread_mutex_destroy(&(((glb->guys)[i]).mutexforlasttime));
+		pthread_mutex_destroy(&(((glb->guys)[i]).mutexforcounteats));
+		i ++;
 	}
 	pthread_mutex_destroy(&(glb->print_mutex));
 	pthread_mutex_destroy(&(glb->stop_mutex));
@@ -40,6 +41,7 @@ void	philo_sleep(int time)
 
 	gettimeofday(&start, 0);
 	gettimeofday(&now, 0);
+	usleep(time * 900);
 	while (philo_gettimeinms(now) - philo_gettimeinms(start) < time)
 	{
 		gettimeofday(&now, 0);

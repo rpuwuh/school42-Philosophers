@@ -6,7 +6,7 @@
 /*   By: bpoetess <bpoetess@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/24 20:40:20 by bpoetess          #+#    #+#             */
-/*   Updated: 2022/06/24 21:35:12 by bpoetess         ###   ########.fr       */
+/*   Updated: 2022/06/27 22:36:45 by bpoetess         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,13 @@ t_global	*philo_setglb(int argc, char **argv)
 
 	glb = (t_global *) malloc(sizeof(t_global));
 	if (!glb)
-		exit (0);
+		exit (12);
 	glb->guys = (pid_t *) malloc (sizeof(pid_t) * ft_atoi(argv[1]));
 	if (!glb->guys)
-		exit (0);
+	{
+		free(glb);
+		exit (12);
+	}
 	glb->count = ft_atoi(argv[1]);
 	glb->ttd = ft_atoi(argv[2]);
 	glb->tte = ft_atoi(argv[3]);
@@ -34,6 +37,7 @@ t_global	*philo_setglb(int argc, char **argv)
 	glb->sem_eaten = philo_createsemaphor("/philo_eaten", ft_atoi(argv[1]));
 	glb->sem_forks_access = philo_createsemaphor("/philo_forks_access", 1);
 	glb->sem_forks = philo_createsemaphor("/philo_forks", ft_atoi(argv[1]));
+	glb->death_sem = philo_createsemaphor("/philo_death_sem", 1);
 	return (glb);
 }
 
@@ -48,6 +52,7 @@ void	philo_end(t_global *glb)
 	philo_killsemaphor(glb->sem_eaten, "/philo_eaten");
 	philo_killsemaphor(glb->sem_forks_access, "/philo_forks_access");
 	philo_killsemaphor(glb->sem_forks, "/philo_forks");
+	philo_killsemaphor(glb->death_sem, "/death_sem");
 	free (glb->guys);
 	free(glb);
 	exit (0);
